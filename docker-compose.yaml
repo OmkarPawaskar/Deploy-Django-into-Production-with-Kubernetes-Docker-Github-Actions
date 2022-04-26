@@ -1,43 +1,47 @@
 version  : "3.9"
 services:
-  web:
-    depends_on:
-      - postgres_db
-    build: 
-      context: ./web
-      dockerfile : Dockerfile 
-    image: django-k8s:v1 #set image name
-    environment:
-      - PORT=8020 #setting container port
-    env_file:
-      - web/.env
-    ports:
-      - "8001:8020" #lhostport: containerport . 8001 is port you ll be using to access app on localhost since this is local port mapped to container port
-    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
-    volumes:
-       - staticfiles:/app/staticfiles/
+  # web:
+  #   depends_on:
+  #     - postgres_db
+  #   build: 
+  #     context: ./web
+  #     dockerfile : Dockerfile 
+  #   image: django-k8s:v1 #set image name
+  #   environment:
+  #     - PORT=8020 #setting container port
+  #   env_file:
+  #     - web/.env
+  #   ports:
+  #     - "8001:8020" #lhostport: containerport . 8001 is port you ll be using to access app on localhost since this is local port mapped to container port
+  #   command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
+  #   volumes:
+  #      - staticfiles:/app/staticfiles/
   postgres_db:
     image: "postgres"
+    restart: always
+    command: -p 5434
     env_file:
       - web/.env
     expose:
-      - 5432
+      - 5434
+    ports:
+      - "5434:5434"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
   redis_db:
       image: redis
       restart: always
       expose:
-        - 6380
+        - 6388
       ports:
-        - "6380:6380"
+        - "6388:6388"
       volumes:
           - redis_data:/data
-      entrypoint: redis-server --appendonly yes --port 6380
+      entrypoint: redis-server --appendonly yes --port 6388
 
 
 volumes: #volumes below are mentioned to ensure they are persistent. As in data remains intact even if container is down.
-  staticfiles:
-    - external : true
+  # staticfiles:
+  #   - external : true
   postgres_data:
   redis_data:
