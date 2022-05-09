@@ -6,7 +6,7 @@
 #kubectl delete -f k8s/nginx/deployment.yaml  => to exit deployment config
 
 apiVersion : apps/v1
-kind : deployment
+kind : Deployment
 metadata :
   name : nginx-deployment
 spec :
