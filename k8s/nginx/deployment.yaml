@@ -1,5 +1,7 @@
+#https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
 #kubectl -f apply k8s/nginx/deployment.yaml
-#kubectl get deployments
+#kubectl get deployment
 #kubectl get deployment nginx-deployment
 #kubectl get pods
 #kubectl exec -it <podname> -- /bin/bash    => to execute a running container in pod  
